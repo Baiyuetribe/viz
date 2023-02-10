@@ -25,10 +25,10 @@ impl Default for Limits {
             .insert("text", Limits::NORMAL);
 
         #[cfg(feature = "json")]
-        let limits = limits.insert("json", <Json as Payload>::LIMIT);
+        let limits = limits.insert(<Json as Payload>::NAME, <Json as Payload>::LIMIT);
 
         #[cfg(feature = "form")]
-        let limits = limits.insert("form", <Form as Payload>::LIMIT);
+        let limits = limits.insert(<Form as Payload>::NAME, <Form as Payload>::LIMIT);
 
         limits.sort()
     }
