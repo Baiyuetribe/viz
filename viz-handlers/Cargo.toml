@@ -1,6 +1,6 @@
 [package]
 name = "viz-handlers"
-version = "0.4.6"
+version = "0.4.7"
 edition = "2021"
 rust-version = "1.60"
 license = "MIT OR Apache-2.0"
@@ -27,7 +27,7 @@ embed = ["dep:hex", "dep:mime_guess", "dep:rust-embed"]
 prometheus = ["opentelemetry/metrics", "dep:opentelemetry-prometheus"]
 
 [dependencies]
-viz-core = { path = "../viz-core", version = '0.4.6' }
+viz-core = { path = "../viz-core", version = '0.4.7' }
 
 # required!
 thiserror = "1.0"
