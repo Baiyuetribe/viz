@@ -28,6 +28,12 @@ impl<T> State<T> {
     }
 }
 
+impl<T> AsRef<T> for State<T> {
+    fn as_ref(&self) -> &T {
+        &self.0
+    }
+}
+
 impl<T> Clone for State<T>
 where
     T: Clone,
@@ -37,9 +43,12 @@ where
     }
 }
 
-impl<T> AsRef<T> for State<T> {
-    fn as_ref(&self) -> &T {
-        &self.0
+impl<T> Default for State<T>
+where
+    T: Default,
+{
+    fn default() -> Self {
+        Self(T::default())
     }
 }
 
