@@ -1,6 +1,6 @@
 [package]
 name = "viz-core"
-version = "0.4.9"
+version = "0.4.10"
 edition = "2021"
 rust-version = "1.60"
 license = "MIT OR Apache-2.0"
@@ -82,13 +82,13 @@ async-compression = { version = "0.3.15", features = ["tokio", "gzip", "brotli",
 opentelemetry = { version = "0.18.0", default-features = false, optional = true }
 opentelemetry-semantic-conventions = { version = "0.10.0", optional = true }
 
-tokio = { version = "1.26", optional = true }
+tokio = { version = "1.27", optional = true }
 tokio-tungstenite = { version = "0.18", optional = true }
 tokio-stream = { version = "0.1.12", optional = true }
 tokio-util = { version = "0.7.7", optional = true }
 
 [dev-dependencies]
-tokio = { version = "1.26", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.27", features = ["rt-multi-thread", "macros"] }
 
 [package.metadata.docs.rs]
 all-features = true

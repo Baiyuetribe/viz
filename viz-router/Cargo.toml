@@ -1,6 +1,6 @@
 [package]
 name = "viz-router"
-version = "0.4.9"
+version = "0.4.10"
 edition = "2021"
 rust-version = "1.60"
 license = "MIT OR Apache-2.0"
@@ -14,7 +14,7 @@ description = "Viz Router"
 default = []
 
 [dependencies]
-viz-core = { path = "../viz-core", version = "0.4.9" }
+viz-core = { path = "../viz-core", version = "0.4.10" }
 path-tree = { version = "0.7" }
 serde = "1.0"
 thiserror = "1.0"
@@ -24,4 +24,4 @@ anyhow = "1.0"
 bytes = "1.4"
 hyper = "0.14"
 serde_derive = "1.0"
-tokio = { version = "1.26", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.27", features = ["rt-multi-thread", "macros"] }
