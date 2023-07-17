@@ -1,7 +1,7 @@
 use std::marker::PhantomData;
 use viz_core::*;
 
-#[tokio::main]
+#[tokio::test]
 async fn main() -> Result<()> {
     pub struct CatchError<H, F, R, E> {
         h: H,
@@ -344,12 +344,17 @@ async fn main() -> Result<()> {
             .catch_error2(|e: std::io::Error| async move {
                 (StatusCode::INTERNAL_SERVER_ERROR, e.to_string())
             });
+        #[cfg(any(feature = "cookie-signed", feature = "cookie-private"))]
+        let cookie_config =
+            viz_core::middleware::cookie::Config::new(viz_core::types::CookieKey::generate());
+        #[cfg(not(any(feature = "cookie-signed", feature = "cookie-private")))]
+        let cookie_config = viz_core::middleware::cookie::Config::new();
         let rhd = d
             .map_into_response()
             .map(map)
             .and_then(and_then)
             .or_else(or_else)
-            .with(viz_core::middleware::cookie::Config::new());
+            .with(cookie_config);
         let rhe = e.map_into_response().after(after);
         let rhf = f.map_into_response();
         let rhg = g.map_into_response();

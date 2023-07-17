@@ -1,5 +1,6 @@
 use std::{
     convert::Infallible,
+    fmt,
     future::{self, Ready},
     io::{Error as IoError, ErrorKind},
     pin::Pin,
@@ -23,9 +24,14 @@ use super::{Listener, Stream};
 pub use tokio_native_tls::native_tls::{Identity, TlsAcceptor};
 
 /// `native-lts`'s config.
-#[derive(Debug)]
 pub struct Config {
     identity: Identity,
+}
+
+impl fmt::Debug for Config {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("NativeTls Config").finish()
+    }
 }
 
 impl Config {
