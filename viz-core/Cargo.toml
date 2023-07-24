@@ -1,6 +1,6 @@
 [package]
 name = "viz-core"
-version = "0.4.11"
+version = "0.4.12"
 edition = "2021"
 rust-version = "1.60"
 license = "MIT OR Apache-2.0"
@@ -83,7 +83,7 @@ opentelemetry = { version = "0.19.0", default-features = false, optional = true 
 opentelemetry-semantic-conventions = { version = "0.11.0", optional = true }
 
 tokio = { version = "1.29", optional = true }
-tokio-tungstenite = { version = "0.19", optional = true }
+tokio-tungstenite = { version = "0.20", optional = true }
 tokio-stream = { version = "0.1.14", optional = true }
 tokio-util = { version = "0.7.8", optional = true }
 
