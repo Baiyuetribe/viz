@@ -1,8 +1,10 @@
 use std::{mem::replace, sync::Arc};
 
+use headers::HeaderMapExt;
+
 use crate::{
     async_trait, header,
-    types::{PayloadError, RouteInfo},
+    types::{PayloadError, RealIp, RouteInfo},
     Body, Bytes, FromRequest, Request, Result,
 };
 
@@ -55,6 +57,11 @@ pub trait RequestExt: Sized {
     where
         K: header::AsHeaderName,
         T: std::str::FromStr;
+
+    /// Get a header with the specified type.
+    fn header_typed<H>(&self) -> Option<H>
+    where
+        H: headers::Header;
 
     /// Get the size of this request's body.
     fn content_length(&self) -> Option<u64>;
@@ -155,6 +162,9 @@ pub trait RequestExt: Sized {
 
     /// Get remote addr.
     fn remote_addr(&self) -> Option<&std::net::SocketAddr>;
+
+    /// Get realip.
+    fn realip(&self) -> Option<RealIp>;
 }
 
 #[async_trait]
@@ -191,6 +201,13 @@ impl RequestExt for Request<Body> {
             .and_then(|v| v.parse::<T>().ok())
     }
 
+    fn header_typed<H>(&self) -> Option<H>
+    where
+        H: headers::Header,
+    {
+        self.headers().typed_get()
+    }
+
     fn content_length(&self) -> Option<u64> {
         self.header(header::CONTENT_LENGTH)
     }
@@ -214,7 +231,11 @@ impl RequestExt for Request<Body> {
 
     #[cfg(feature = "limits")]
     async fn bytes_with(&mut self, name: &str, max: u64) -> Result<Bytes, PayloadError> {
-        let limit = self.limits().get(name).unwrap_or(max) as usize;
+        let limit = self
+            .limits()
+            .get(name)
+            .and_then(|value| usize::try_from(value).ok())
+            .unwrap_or(usize::try_from(max).ok().min(Some(usize::MIN)).unwrap());
         let body = Limited::new(replace(self.body_mut(), Body::empty()), limit);
         hyper::body::to_bytes(body).await.map_err(|err| {
             if err.downcast_ref::<LengthLimitError>().is_some() {
@@ -359,5 +380,9 @@ impl RequestExt for Request<Body> {
 
     fn route_info(&self) -> &Arc<RouteInfo> {
         self.extensions().get().expect("should get current route")
+    }
+
+    fn realip(&self) -> Option<RealIp> {
+        RealIp::parse(self)
     }
 }

@@ -83,7 +83,7 @@
 //!     type Output = Result<Response>;  
 //!
 //!     async fn call(&self, req: Request) -> Self::Output {
-//!         let path = req.path().clone();
+//!         let path = req.path();
 //!         let method = req.method().clone();
 //!         let code = self.code.fetch_add(1, Ordering::SeqCst);
 //!         Ok(format!("code = {}, method = {}, path = {}", code, method, path).into_response())
@@ -515,6 +515,7 @@
 #![doc(html_logo_url = "https://viz.rs/logo.svg")]
 #![doc(html_favicon_url = "https://viz.rs/logo.svg")]
 #![forbid(unsafe_code)]
+#![allow(clippy::module_name_repetitions)]
 #![warn(
     missing_debug_implementations,
     missing_docs,

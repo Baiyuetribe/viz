@@ -5,6 +5,9 @@ use crate::{header, Body, Response, Result, StatusCode};
 
 /// The [Response] Extension.
 pub trait ResponseExt: Sized {
+    /// Get the size of this response's body.
+    fn content_length(&self) -> Option<u64>;
+
     /// The response with the specified [`Content-Type`][mdn].
     ///
     /// [mdn]: <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type>
@@ -34,8 +37,12 @@ pub trait ResponseExt: Sized {
         Self::with(t, mime::TEXT_HTML_UTF_8.as_ref())
     }
 
-    #[cfg(feature = "json")]
     /// The response with `application/javascript; charset=utf-8` media type.
+    ///
+    /// # Errors
+    ///
+    /// Throws an error if serialization fails.
+    #[cfg(feature = "json")]
     fn json<T>(t: T) -> Result<Response, crate::types::PayloadError>
     where
         T: serde::Serialize,
@@ -115,6 +122,13 @@ pub trait ResponseExt: Sized {
 }
 
 impl ResponseExt for Response {
+    fn content_length(&self) -> Option<u64> {
+        self.headers()
+            .get(header::CONTENT_LENGTH)
+            .and_then(|v| v.to_str().ok())
+            .and_then(|v| v.parse().ok())
+    }
+
     fn ok(&self) -> bool {
         self.status().is_success()
     }

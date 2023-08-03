@@ -5,6 +5,7 @@
 #![doc(html_logo_url = "https://viz.rs/logo.svg")]
 #![doc(html_favicon_url = "https://viz.rs/logo.svg")]
 #![forbid(unsafe_code)]
+#![allow(clippy::module_name_repetitions)]
 #![warn(
     missing_debug_implementations,
     missing_docs,
@@ -61,7 +62,7 @@ pub use thiserror::Error as ThisError;
 
 #[doc(hidden)]
 mod tuples {
-    use super::*;
+    use super::{async_trait, Error, FnExt, FromRequest, Future, IntoResponse, Request, Result};
 
     tuple_impls!(A B C D E F G H I J K L);
 }

@@ -8,7 +8,7 @@ use crate::{
     types, Handler, IntoResponse, Request, Response, Result, Transform,
 };
 
-/// A configure for [CookieMiddleware].
+/// A configure for [`CookieMiddleware`].
 pub struct Config {
     #[cfg(any(feature = "cookie-signed", feature = "cookie-private"))]
     key: std::sync::Arc<types::CookieKey>,
@@ -16,14 +16,15 @@ pub struct Config {
 
 #[allow(clippy::new_without_default)]
 impl Config {
-    #[cfg(not(any(feature = "cookie-signed", feature = "cookie-private")))]
     /// Creates a new config.
+    #[cfg(not(any(feature = "cookie-signed", feature = "cookie-private")))]
+    #[must_use]
     pub fn new() -> Self {
         Self {}
     }
 
-    #[cfg(any(feature = "cookie-signed", feature = "cookie-private"))]
     /// Creates a new config with the [`Key`][types::CookieKey].
+    #[cfg(any(feature = "cookie-signed", feature = "cookie-private"))]
     pub fn new(key: types::CookieKey) -> Self {
         Self {
             key: std::sync::Arc::new(key),
@@ -104,21 +105,15 @@ where
             .await
             .map(IntoResponse::into_response)
             .map(|mut res| {
-                #[allow(clippy::single_match)]
-                match cookies.jar().lock() {
-                    Ok(c) => {
-                        c.delta()
-                            .filter_map(|cookie| {
-                                HeaderValue::from_str(&cookie.encoded().to_string()).ok()
-                            })
-                            .fold(res.headers_mut(), |headers, cookie| {
-                                headers.append(SET_COOKIE, cookie);
-                                headers
-                            });
-                    }
-                    Err(_) => {
-                        // TODO: trace error
-                    }
+                if let Ok(c) = cookies.jar().lock() {
+                    c.delta()
+                        .filter_map(|cookie| {
+                            HeaderValue::from_str(&cookie.encoded().to_string()).ok()
+                        })
+                        .fold(res.headers_mut(), |headers, cookie| {
+                            headers.append(SET_COOKIE, cookie);
+                            headers
+                        });
                 }
                 res
             })
