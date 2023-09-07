@@ -37,13 +37,13 @@ mime_guess = { version = "2.0", optional = true }
 
 # serve
 percent-encoding = { version = "2.3", optional = true }
-tokio = { version = "1.31", optional = true }
+tokio = { version = "1.32", optional = true }
 tokio-stream = { version = "0.1", optional = true }
 tokio-util = { version = "0.7", optional = true }
 
 # embed
 hex = { version = "0.4", optional = true }
-rust-embed = { version = "6.6.1", features = ["compression"], optional = true }
+rust-embed = { version = "6.8", features = ["compression"], optional = true }
 
 # OpenTelemetry
 opentelemetry = { version = "0.20", default-features = false, optional = true }

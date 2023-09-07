@@ -74,7 +74,7 @@ viz-handlers = { path = "../viz-handlers", version = "0.4.13", default-features 
 viz-macros = { path = "../viz-macros", version = "0.1.0", optional = true }
 
 hyper = { version = "0.14", features = ["server", "stream", "tcp"] }
-tokio = { version = "1.31", features = ["net"] }
+tokio = { version = "1.32", features = ["net"] }
 
 futures-util = { version = "0.3", optional = true }
 rustls-pemfile = { version = "1.0", optional = true }
