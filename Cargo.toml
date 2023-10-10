@@ -7,3 +7,4 @@ members = [
   "viz-macros",
   "viz-router",
 ]
+resolver = "2"

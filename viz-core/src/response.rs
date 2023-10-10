@@ -49,7 +49,7 @@ pub trait ResponseExt: Sized {
     {
         let mut buf = BytesMut::with_capacity(128).writer();
         serde_json::to_writer(&mut buf, &t)
-            .map(|_| Self::with(buf.into_inner().freeze(), mime::APPLICATION_JSON.as_ref()))
+            .map(|()| Self::with(buf.into_inner().freeze(), mime::APPLICATION_JSON.as_ref()))
             .map_err(crate::types::PayloadError::Json)
     }
 

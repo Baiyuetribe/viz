@@ -46,8 +46,12 @@ pub trait RequestExt: Sized {
     /// Get URL's query string of this request.
     fn query_string(&self) -> Option<&str>;
 
-    #[cfg(feature = "query")]
     /// Get query data by type.
+    ///
+    /// # Errors
+    ///
+    /// Will return [`PayloadError::UrlDecode`] if decoding the query string fails.
+    #[cfg(feature = "query")]
     fn query<T>(&self) -> Result<T, PayloadError>
     where
         T: serde::de::DeserializeOwned;
@@ -79,10 +83,10 @@ pub trait RequestExt: Sized {
     /// [mdn]: <https://developer.mozilla.org/en-US/docs/Web/API/Response/arrayBuffer>
     async fn bytes(&mut self) -> Result<Bytes, PayloadError>;
 
-    #[cfg(feature = "limits")]
     /// Return with a [Bytes][mdn]  by a limit representation of the request body.
     ///
     /// [mdn]: <https://developer.mozilla.org/en-US/docs/Web/API/Response/arrayBuffer>
+    #[cfg(feature = "limits")]
     async fn bytes_with(&mut self, name: &str, max: u64) -> Result<Bytes, PayloadError>;
 
     /// Return with a [Text][mdn] representation of the request body.
@@ -90,68 +94,79 @@ pub trait RequestExt: Sized {
     /// [mdn]: <https://developer.mozilla.org/en-US/docs/Web/API/Response/text>
     async fn text(&mut self) -> Result<String, PayloadError>;
 
-    #[cfg(feature = "form")]
     /// Return with a `application/x-www-form-urlencoded` [FormData][mdn] by the specified type
     /// representation of the request body.
     ///
     /// [mdn]: <https://developer.mozilla.org/en-US/docs/Web/API/FormData>
+    #[cfg(feature = "form")]
     async fn form<T>(&mut self) -> Result<T, PayloadError>
     where
         T: serde::de::DeserializeOwned;
 
-    #[cfg(feature = "json")]
     /// Return with a [JSON][mdn] by the specified type representation of the request body.
     ///
     /// [mdn]: <https://developer.mozilla.org/en-US/docs/Web/API/Response/json>
+    #[cfg(feature = "json")]
     async fn json<T>(&mut self) -> Result<T, PayloadError>
     where
         T: serde::de::DeserializeOwned;
 
-    #[cfg(feature = "multipart")]
     /// Return with a `multipart/form-data` [FormData][mdn] by the specified type
     /// representation of the request body.
     ///
     /// [mdn]: <https://developer.mozilla.org/en-US/docs/Web/API/FormData>
+    #[cfg(feature = "multipart")]
     async fn multipart(&mut self) -> Result<Multipart, PayloadError>;
 
-    #[cfg(feature = "state")]
     /// Return a shared state by the specified type.
+    #[cfg(feature = "state")]
     fn state<T>(&self) -> Option<T>
     where
         T: Clone + Send + Sync + 'static;
 
-    #[cfg(feature = "state")]
     /// Store a shared state.
+    #[cfg(feature = "state")]
     fn set_state<T>(&mut self, t: T) -> Option<T>
     where
         T: Clone + Send + Sync + 'static;
 
-    #[cfg(feature = "cookie")]
     /// Get a wrapper of `cookie-jar` for managing cookies.
+    ///
+    /// # Errors
+    ///
+    /// Will return [`CookiesError`] if getting cookies fails.
+    #[cfg(feature = "cookie")]
     fn cookies(&self) -> Result<Cookies, CookiesError>;
 
-    #[cfg(feature = "cookie")]
     /// Get a cookie by the specified name.
+    #[cfg(feature = "cookie")]
     fn cookie<S>(&self, name: S) -> Option<Cookie<'_>>
     where
         S: AsRef<str>;
 
-    #[cfg(feature = "limits")]
     /// Get limits settings.
+    #[cfg(feature = "limits")]
     fn limits(&self) -> &Limits;
 
     #[cfg(feature = "session")]
     /// Get current session.
     fn session(&self) -> &Session;
 
-    #[cfg(feature = "params")]
     /// Get all parameters.
+    ///
+    /// # Errors
+    ///
+    /// Will return [`ParamsError`] if deserializer the parameters fails.
+    #[cfg(feature = "params")]
     fn params<T>(&self) -> Result<T, ParamsError>
     where
         T: serde::de::DeserializeOwned;
 
-    #[cfg(feature = "params")]
     /// Get single parameter by name.
+    /// # Errors
+    ///
+    /// Will return [`ParamsError`] if deserializer the single parameter fails.
+    #[cfg(feature = "params")]
     fn param<T>(&self, name: &str) -> Result<T, ParamsError>
     where
         T: std::str::FromStr,
