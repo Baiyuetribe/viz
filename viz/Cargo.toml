@@ -1,6 +1,6 @@
 [package]
 name = "viz"
-version = "0.4.15"
+version = "0.4.16"
 edition = "2021"
 rust-version = "1.60"
 readme = "README.md"
