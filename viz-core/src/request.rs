@@ -1,10 +1,10 @@
-use std::{mem::replace, sync::Arc};
+use std::mem::replace;
 
 use headers::HeaderMapExt;
 
 use crate::{
     async_trait, header,
-    types::{PayloadError, RealIp, RouteInfo},
+    types::{PayloadError, RealIp},
     Body, Bytes, FromRequest, Request, Result,
 };
 
@@ -32,7 +32,7 @@ use crate::types::{Cookie, Cookies, CookiesError};
 use crate::types::Session;
 
 #[cfg(feature = "params")]
-use crate::types::{ParamsError, PathDeserializer};
+use crate::types::{ParamsError, PathDeserializer, RouteInfo};
 
 /// The [Request] Extension.
 #[async_trait]
@@ -173,7 +173,8 @@ pub trait RequestExt: Sized {
         T::Err: std::fmt::Display;
 
     /// Get current route.
-    fn route_info(&self) -> &Arc<RouteInfo>;
+    #[cfg(feature = "params")]
+    fn route_info(&self) -> &std::sync::Arc<RouteInfo>;
 
     /// Get remote addr.
     fn remote_addr(&self) -> Option<&std::net::SocketAddr>;
@@ -393,7 +394,8 @@ impl RequestExt for Request<Body> {
         self.extensions().get()
     }
 
-    fn route_info(&self) -> &Arc<RouteInfo> {
+    #[cfg(feature = "params")]
+    fn route_info(&self) -> &std::sync::Arc<RouteInfo> {
         self.extensions().get().expect("should get current route")
     }
 

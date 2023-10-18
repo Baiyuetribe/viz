@@ -1,3 +1,6 @@
+#![allow(clippy::wildcard_imports)]
+#![allow(clippy::module_name_repetitions)]
+
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;

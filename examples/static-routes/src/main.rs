@@ -35,6 +35,7 @@ async fn main() -> Result<()> {
 }
 
 /// Serves a request and returns a response.
+#[allow(clippy::missing_errors_doc)]
 pub async fn serve(mut req: Request, mut addr: Option<SocketAddr>) -> Result<Response, Infallible> {
     let method = req.method().to_owned();
     let path = req.path().to_owned();

@@ -1,6 +1,6 @@
 [package]
 name = "viz-core"
-version = "0.4.16"
+version = "0.4.17"
 edition = "2021"
 rust-version = "1.60"
 license = "MIT OR Apache-2.0"
@@ -47,7 +47,7 @@ cors = []
 
 compression = ["tokio-util/io", "dep:async-compression"]
 
-otel = ["dep:opentelemetry", "dep:opentelemetry-semantic-conventions"]
+otel = ["params", "dep:opentelemetry", "dep:opentelemetry-semantic-conventions"]
 otel-tracing = ["otel", "opentelemetry?/trace"]
 otel-metrics = ["otel", "opentelemetry?/metrics"]
 

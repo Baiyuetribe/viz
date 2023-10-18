@@ -8,4 +8,4 @@ publish = false
 viz = { path = "../../../viz", features = ["embed"] }
 
 tokio = { version = "1.0", features = ["rt-multi-thread", "macros"] }
-rust-embed = "6.4.0"
+rust-embed = "8.0"

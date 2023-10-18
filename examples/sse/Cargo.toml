@@ -9,7 +9,7 @@ viz = { path = "../../viz", features = ["sse"] }
 
 tokio = { version = "1.0", features = ["rt-multi-thread", "macros"] }
 mime = "0.3"
-systemstat = { version = "0.1", features = ["serde"] }
+systemstat = { version = "0.2", features = ["serde"] }
 serde_json = "1.0"
 tokio-stream = "0.1"
 futures-util = "0.3"
