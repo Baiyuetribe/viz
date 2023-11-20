@@ -18,7 +18,7 @@ where
     I: AsyncRead + AsyncWrite + Unpin + Send + 'static,
 {
     Builder::new(TokioExecutor::new())
-        .serve_connection_with_upgrades(Io::new(stream).into_inner(), Responder::new(tree, addr))
+        .serve_connection_with_upgrades(Io::new(stream), Responder::new(tree, addr))
         .await
         .map_err(Into::into)
 }
